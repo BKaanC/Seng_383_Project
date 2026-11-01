@@ -46,29 +46,48 @@
 
 ### Work Packages (Epics)
 
-> One row per Jira epic. Number of tasks = how many tasks you created under that epic.
+Development is split by module, so every member works on both frontend and backend. The team uses one-week sprints that follow the weekly course schedule. Task counts are taken from Jira on 1 November 2026 and are updated at the end of each sprint.
 
 | Epic | Owner | Number of tasks | Planned sprint(s) |
 |---|---|---|---|
-| M1 | | | |
-| M2 | | | |
-| M3 | | | |
-| M4 | | | |
-| M5 | | | |
-| M6 | | | |
-| M7 | | | |
-| M8 | | | |
+| PMP-1 – Project, Jira setup, team and roles | Bekir Kaan Çalışkan | 1 | Sprint 1 |
+| PMP-2 – Work packages and sprint plan | Bekir Kaan Çalışkan | 1 | Sprint 2–3 |
+| PMP-3 – Progress review: mid-term (v0.1) | Bekir Kaan Çalışkan | 0 | Sprint 6 |
+| PMP-4 – Progress review: v0.2 | Bekir Kaan Çalışkan | 0 | Sprint 7 |
+| PMP-5 – Progress review: final (v1.0) | Bekir Kaan Çalışkan | 0 | Sprint 9 |
+| PMP-6 – Retrospective | Bekir Kaan Çalışkan | 0 | Sprint 9 |
+| SRS – Software requirements specification | Bekir Kaan Çalışkan (each member writes own modules) | 3 | Sprint 2–3 (first), Sprint 7 (final) |
+| DESIGN – Software design document | Bekir Kaan Çalışkan (each member writes own modules) | 0 | Sprint 3 (first), Sprint 7 (final) |
+| M1 – Login and roles | Aleyna Tanrıverdi | 1 | Sprint 2–5 |
+| M2 – Linking specialists | Aleyna Tanrıverdi | 0 | Sprint 4–6 |
+| M3 – Weekly schedule | Irmak Konak | 3 | Sprint 1, Sprint 4–6 |
+| M4 – Tasks | Bekir Kaan Çalışkan | 0 | Sprint 4–6 |
+| M5 – Specialist entries | Irmak Konak | 0 | Sprint 6–7 |
+| M6 – Documents | Aleyna Tanrıverdi | 0 | Sprint 6–7 |
+| M7 – Weekly statistics | Bekir Kaan Çalışkan | 0 | Sprint 6–7 |
+| M8 – Role-based AI summary | Irmak Konak | 0 | Sprint 6–7 |
+
+**Cross-module responsibilities:**
+
+- Aleyna Tanrıverdi: backend foundation, authentication (JWT) and access-control middleware used by all modules.
+- Irmak Konak: frontend foundation (React client); AI integration with the Gemini API, including the mandatory mock mode.
+- Bekir Kaan Çalışkan: CI pipeline and end-to-end test setup (Playwright); team contact and PMP.
+
+**AI provider:** Gemini API (free tier, Flash models). GitHub Models, the other option in the assignment, was retired by GitHub on 30 July 2026.
 
 ### Sprint Plan
 
-> One row per Jira sprint. Align sprints with the weekly schedule.
-
 | Sprint | Weeks | Sprint goal | Ends with |
 |---|---|---|---|
-| Sprint 1 | | | Walking skeleton (v0.0), Week 6 |
-| Sprint 2 | | | Release v0.1, mid-term |
-| Sprint 3 | | | Release v0.2, Week 10 |
-| Sprint 4 | | | Release v1.0, final |
+| Sprint 1 | Week 4 (19–25 Oct) | Jira and repository setup, PMP-1, React client skeleton | Jira connected to GitHub, PMP-1 done |
+| Sprint 2 | Week 5 (26 Oct–1 Nov) | Express server skeleton, SRS and SDD templates, module split decided | Client and server skeletons on `main` |
+| Sprint 3 | Week 6 (2–8 Nov) | Client–server–database connection, seed script, CI running tests, README; SRS and SDD first version; PMP-2 | Walking skeleton (v0.0), Week 6 |
+| Sprint 4 | Week 7 (9–15 Nov) | M1 login and roles, start of M2, M3 and M4 | M1 working end to end |
+| Sprint 5 | Week 8 (16–22 Nov) | M2, M3 and M4 working; first end-to-end test running in CI | M1–M4 feature complete |
+| Sprint 6 | Week 9 (23–29 Nov) | Fix and polish M1–M4; start M5–M8; PMP-3 | Release v0.1 (M1–M4), mid-term demo |
+| Sprint 7 | Week 10 (30 Nov–6 Dec) | M5–M8 complete; end-to-end tests for 3 critical flows; branch coverage ≥ 40%; SRS and SDD final; PMP-4 | Release v0.2 (M1–M8), Week 10 |
+| Sprint 8 | Week 11 (7–13 Dec) | Bug fixes, an end-to-end test for each of M1–M8, coverage towards 60% | All modules tested |
+| Sprint 9 | Week 12 (14–20 Dec) | Final report, branch coverage ≥ 60%, PMP-5 and PMP-6, presentation | Release v1.0, final evaluation |
 
 ---
 
