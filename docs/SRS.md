@@ -59,6 +59,7 @@ A child's development is followed by many people at once (parents, teachers, psy
 | FR-M3-04 | The system shall show the child their own events for the current week. | Must |
 | FR-M3-05 | The system shall reject an event whose end time is before its start time. | Must |
 | FR-M3-06 | The system shall let the creator of an event edit or delete it. | Should |
+| FR-M3-07 | The Vite client proxy shall redirect requests starting with `/api` to the Express backend running on port 3001. | Must |
 
 ### M4 – Tasks
 
@@ -111,6 +112,7 @@ A child's development is followed by many people at once (parents, teachers, psy
 | FR-M8-05 | The system shall instruct the AI not to diagnose, suggest treatment or make decisions, and present the summary only as a suggestion. | Must |
 | FR-M8-06 | The system shall provide a mock mode that returns a fixed summary without calling the AI service, used in tests and CI. | Must |
 | FR-M8-07 | The system shall show a clear message when the AI service is unavailable, and the rest of the application shall keep working. | Must |
+| FR-M8-02 | The AI-generated summary reports shall refresh automatically whenever a new sprint milestone or task status changes. | Must |
 
 ---
 
