@@ -48,6 +48,8 @@ A child's development is followed by many people at once (parents, teachers, psy
 | FR-M2-04 | The system shall let a parent unlink a specialist after a confirmation step. | Must |
 | FR-M2-05 | The system shall reject, in the API, every request by an unlinked specialist about the child, even if the specialist holds a valid token. | Must |
 | FR-M2-06 | The system shall show a specialist the list of children they are linked to. | Must |
+| FR-M2-07 | The system shall reject linking a specialist who is already linked to the child. | Must |
+| FR-M2-08 | The system shall allow a parent to link, unlink and view data only for their own child. | Must |
 
 ### M3 – Weekly schedule
 
@@ -189,3 +191,4 @@ flowchart LR
 | Date | Change | By |
 |---|---|---|
 | 2026-11-02 | First version: requirements for M1–M8, non-functional requirements and critical flows | Synergy team |
+| 2026-11-03 | Reviewed M1, M2, M6 requirements; added FR-M2-07, FR-M2-08 | Aleyna Tanrıverdi |
