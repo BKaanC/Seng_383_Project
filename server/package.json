@@ -26,6 +26,7 @@
     "testEnvironment": "node",
     "collectCoverageFrom": [
       "*.js",
+      "services/**/*.js",
       "!seed.js",
       "!index.js"
     ]
