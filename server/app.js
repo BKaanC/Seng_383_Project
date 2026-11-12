@@ -3,7 +3,7 @@ const cors = require('cors');
 const db = require('./db');
 const bcrypt = require('bcryptjs');
 const { signToken, requireAuth } = require('./auth');
-const { createEvent, ValidationError } = require('./services/eventService');
+const eventsRouter = require('./routes/events');
 
 
 const app = express();
@@ -49,40 +49,6 @@ app.get('/api/me', requireAuth, (req, res) => {
   res.json(user);
 });
 
-// M1: Login and access checks
-app.get('/api/children/:childId/events', (req, res) => {
-  const childId = Number(req.params.childId);
-  if (!Number.isInteger(childId) || childId <= 0) {
-    return res.status(400).json({ error: 'Invalid child id' });
-  }
-
-  const events = db
-    .prepare(
-      `SELECT id, child_id AS childId, title, description,
-              start_time AS startTime, end_time AS endTime
-       FROM events
-       WHERE child_id = ?
-       ORDER BY start_time`
-    )
-    .all(childId);
-
-  res.json(events);
-});
-
-// FR-M3-01, FR-M3-05: add an event for a child.
-app.post('/api/children/:childId/events', (req, res) => {
-  const childId = Number(req.params.childId);
-  if (!Number.isInteger(childId) || childId <= 0) {
-    return res.status(400).json({ error: 'Invalid child id' });
-  }
-  try {
-    res.status(201).json(createEvent(childId, req.body));
-  } catch (err) {
-    if (err instanceof ValidationError) {
-      return res.status(400).json({ error: err.message });
-    }
-    throw err;
-  }
-});
+app.use('/api/children/:childId/events', eventsRouter);
 
 module.exports = app;
