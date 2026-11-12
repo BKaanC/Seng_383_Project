@@ -58,13 +58,41 @@ function validateNewEvent(input) {
   };
 }
 
+// FR-M3-02: a week is given by its Monday, e.g. 2026-11-09.
+function validateWeek(week) {
+  if (!isValidDate(week)) {
+    throw new ValidationError('week must be in the format YYYY-MM-DD');
+  }
+  if (new Date(`${week}T00:00:00Z`).getUTCDay() !== 1) {
+    throw new ValidationError('week must be a Monday');
+  }
+}
+
+function addDays(date, days) {
+  const result = new Date(`${date}T00:00:00Z`);
+  result.setUTCDate(result.getUTCDate() + days);
+  return result.toISOString().slice(0, 10);
+}
+
 const SELECT_EVENT = `SELECT id, child_id AS childId, title, description,
                              start_time AS startTime, end_time AS endTime
                       FROM events`;
 
-// Returns all of the child's events, sorted by start time.
-function listEvents(childId) {
-  return db.prepare(`${SELECT_EVENT} WHERE child_id = ? ORDER BY start_time`).all(childId);
+// Without a week, returns all of the child's events.
+// With a week, returns the events that start from Monday 00:00 up to the next Monday 00:00.
+// Times are stored as text like 2026-11-04T17:00:00, so they compare correctly as text.
+function listEvents(childId, week) {
+  if (week === undefined) {
+    return db.prepare(`${SELECT_EVENT} WHERE child_id = ? ORDER BY start_time`).all(childId);
+  }
+  validateWeek(week);
+  return db
+    .prepare(
+      `${SELECT_EVENT}
+       WHERE child_id = ? AND start_time >= ? AND start_time < ?
+       ORDER BY start_time`
+    )
+    .all(childId, `${week}T00:00:00`, `${addDays(week, 7)}T00:00:00`);
 }
 
 function createEvent(childId, input) {
