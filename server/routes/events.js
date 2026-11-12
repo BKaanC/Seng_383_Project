@@ -14,9 +14,9 @@ router.use((req, res, next) => {
   next();
 });
 
-// The child's events.
+// FR-M3-02: the child's events, optionally only one week (?week=YYYY-MM-DD, a Monday).
 router.get('/', (req, res) => {
-  res.json(listEvents(req.childId));
+  res.json(listEvents(req.childId, req.query.week));
 });
 
 // FR-M3-01, FR-M3-05: add an event for a child.
