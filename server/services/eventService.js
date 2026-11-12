@@ -58,6 +58,15 @@ function validateNewEvent(input) {
   };
 }
 
+const SELECT_EVENT = `SELECT id, child_id AS childId, title, description,
+                             start_time AS startTime, end_time AS endTime
+                      FROM events`;
+
+// Returns all of the child's events, sorted by start time.
+function listEvents(childId) {
+  return db.prepare(`${SELECT_EVENT} WHERE child_id = ? ORDER BY start_time`).all(childId);
+}
+
 function createEvent(childId, input) {
   const event = validateNewEvent(input);
 
@@ -68,14 +77,7 @@ function createEvent(childId, input) {
     )
     .run(childId, event.title, event.description, event.startTime, event.endTime);
 
-  return db
-    .prepare(
-      `SELECT id, child_id AS childId, title, description,
-              start_time AS startTime, end_time AS endTime
-       FROM events
-       WHERE id = ?`
-    )
-    .get(result.lastInsertRowid);
+  return db.prepare(`${SELECT_EVENT} WHERE id = ?`).get(result.lastInsertRowid);
 }
 
-module.exports = { createEvent, ValidationError };
+module.exports = { listEvents, createEvent, ValidationError };
