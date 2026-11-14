@@ -2,7 +2,7 @@
 
 **Team name:** Synergy  
 **Version:** ☑ First version (Week 6) ☐ Final (Week 10)  
-**Last updated:** 2026-11-02
+**Last updated:** 2026-11-14
 
 ---
 
@@ -48,7 +48,7 @@ flowchart LR
 
 | Module | Owner | Main components | Implements requirements |
 |---|---|---|---|
-| M1 – Login and roles | Aleyna Tanrıverdi | `routes/auth.js` (`POST /api/auth/login`), `middleware/auth.js` (`requireAuth`, `requireRole`), `LoginPage`, `ProtectedRoute`, `AuthContext` | FR-M1-01 … FR-M1-06 |
+| M1 – Login and roles | Aleyna Tanrıverdi | `auth.js` (`signToken`, `requireAuth`, later `requireRole`), `POST /api/login` and `GET /api/me` in `app.js`, `LoginForm`, `Root`, `RoleScreen`, `api.js` (`login`, `authFetch`, session in `sessionStorage`) | FR-M1-01 … FR-M1-06 |
 | M2 – Linking specialists | Aleyna Tanrıverdi | `routes/links.js`, `services/linkService.js`, `middleware/childAccess.js` (`requireChildAccess`), `SpecialistsPage`, `MyChildrenPage` | FR-M2-01 … FR-M2-06 |
 | M3 – Weekly schedule | Irmak Konak | `routes/events.js`, `services/eventService.js`, `WeeklySchedule` component, `AddEventForm` | FR-M3-01 … FR-M3-06 |
 | M4 – Tasks | Bekir Kaan Çalışkan | `routes/tasks.js`, `services/taskService.js`, `TaskList`, `AssignTaskForm`, `ChildTasksPage` | FR-M4-01 … FR-M4-06 |
@@ -57,7 +57,7 @@ flowchart LR
 | M7 – Weekly statistics | Bekir Kaan Çalışkan | `services/statsService.js` (`completionRate`), `routes/stats.js`, `WeeklyStats` component | FR-M7-01 … FR-M7-04 |
 | M8 – Role-based AI summary | Irmak Konak | `ai/index.js` (provider switch), `ai/geminiClient.js`, `ai/mockClient.js`, `ai/prompts.js` (parent / specialist prompts), `routes/summary.js`, `AiSummaryCard` | FR-M8-01 … FR-M8-07 |
 
-**Shared parts:** `server/db.js` (connection), `server/schema.sql` (all tables), `server/seed.js` (synthetic data), `client/src/api.js` (fetch wrapper that adds the JWT).
+**Shared parts:** `server/db.js` (connection and table creation), `server/seed.js` (synthetic data), `client/src/api.js` (fetch wrapper that adds the JWT).
 
 ---
 
@@ -65,14 +65,13 @@ flowchart LR
 
 ```mermaid
 erDiagram
-    USER ||--o{ CHILD : "is parent of"
-    USER ||--o| CHILD : "logs in as"
+    USER ||--o{ USER : "is parent of"
+    USER ||--o{ SPECIALIST_LINK : "child has"
     USER ||--o{ SPECIALIST_LINK : "specialist in"
-    CHILD ||--o{ SPECIALIST_LINK : has
-    CHILD ||--o{ EVENT : has
-    CHILD ||--o{ TASK : has
-    CHILD ||--o{ OBSERVATION : has
-    CHILD ||--o{ DOCUMENT : has
+    USER ||--o{ EVENT : "child has"
+    USER ||--o{ TASK : "child has"
+    USER ||--o{ OBSERVATION : "child has"
+    USER ||--o{ DOCUMENT : "child has"
     USER ||--o{ EVENT : creates
     USER ||--o{ TASK : assigns
     USER ||--o{ OBSERVATION : writes
@@ -84,13 +83,7 @@ erDiagram
         string email UK
         string password_hash
         string role "parent | specialist | child"
-    }
-    CHILD {
-        int id PK
-        string name
-        date birth_date
-        int parent_id FK
-        int user_id FK "child's own login"
+        int parent_id FK "child accounts only"
     }
     SPECIALIST_LINK {
         int id PK
@@ -141,19 +134,19 @@ erDiagram
     }
 ```
 
-An unlink deletes the `SPECIALIST_LINK` row; records the specialist created stay in the database but the specialist can no longer reach them.
+Children are user accounts with the role `child`, because every child also logs in. A child's `parent_id` points to the parent's user id, and every `child_id` in the other tables is the child's `users.id`. An unlink deletes the `SPECIALIST_LINK` row; records the specialist created stay in the database but the specialist can no longer reach them.
 
 ---
 
 ## 4. API / Interfaces
 
-All endpoints are under `/api`, use JSON, and require `Authorization: Bearer <JWT>` except `POST /api/auth/login` and `GET /api/health`. "Child access" means the user is the child's parent, a currently linked specialist, or the child themself (only where stated).
+All endpoints are under `/api`, use JSON, and require `Authorization: Bearer <JWT>` except `POST /api/login` and `GET /api/health`. "Child access" means the user is the child's parent, a currently linked specialist, or the child themself (only where stated).
 
 | Method | Endpoint | Description | Module |
 |---|---|---|---|
 | GET | `/api/health` | Health check, no login needed | – |
-| POST | `/api/auth/login` | Log in, returns JWT and user (id, name, role) | M1 |
-| GET | `/api/auth/me` | Current user from the token | M1 |
+| POST | `/api/login` | Log in, returns JWT and user (id, name, role) | M1 |
+| GET | `/api/me` | Current user from the token | M1 |
 | GET | `/api/children` | Children the user may access (parent: own, specialist: linked, child: self) | M2 |
 | GET | `/api/children/:childId/specialists` | List linked specialists (parent) | M2 |
 | POST | `/api/children/:childId/specialists` | Link a specialist by email and type (parent) | M2 |
@@ -278,3 +271,4 @@ The screens follow the example screens in Appendix A of the assignment; the inte
 | Date | Change | By |
 |---|---|---|
 | 2026-11-02 | First version: architecture, module design, data model, API and critical flows | Synergy team |
+| 2026-11-14 | Children stored in the `users` table (role `child`, `parent_id`) instead of a separate CHILD table; login paths changed to `/api/login` and `/api/me`; M1 components updated to the code | Bekir Kaan Çalışkan |
