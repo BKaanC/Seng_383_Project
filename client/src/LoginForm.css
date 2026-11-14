@@ -1,0 +1,23 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 22rem;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.login-form input,
+.login-form button {
+  padding: 0.5rem;
+  font: inherit;
+}
+
+.login-form button {
+  cursor: pointer;
+}
