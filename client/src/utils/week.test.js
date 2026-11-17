@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addDays, mondayOf, today, weekDays, weekLabel } from './week'
+import { addDays, dayLabel, mondayOf, today, weekDays, weekLabel } from './week'
 
 describe('today', () => {
   it('uses the local date, not UTC', () => {
@@ -67,5 +67,12 @@ describe('weekLabel', () => {
 
   it('shows both years when the week crosses into the next year', () => {
     expect(weekLabel('2026-12-28')).toBe('28 Aralık 2026 – 3 Ocak 2027')
+  })
+})
+
+describe('dayLabel', () => {
+  it('shows the weekday, the day and the month', () => {
+    expect(dayLabel('2026-11-09')).toBe('Pazartesi, 9 Kasım')
+    expect(dayLabel('2026-11-15')).toBe('Pazar, 15 Kasım')
   })
 })

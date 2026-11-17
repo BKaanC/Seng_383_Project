@@ -41,6 +41,13 @@ const dayAndMonth = new Intl.DateTimeFormat('tr-TR', {
   timeZone: 'UTC',
 })
 const monthName = new Intl.DateTimeFormat('tr-TR', { month: 'long', timeZone: 'UTC' })
+const weekdayName = new Intl.DateTimeFormat('tr-TR', { weekday: 'long', timeZone: 'UTC' })
+
+// e.g. 'Pazartesi, 9 Kasım'
+export function dayLabel(dateString) {
+  const date = parse(dateString)
+  return `${weekdayName.format(date)}, ${dayAndMonth.format(date)}`
+}
 
 // e.g. '9–15 Kasım 2026', '30 Kasım – 6 Aralık 2026', '28 Aralık 2026 – 3 Ocak 2027'
 export function weekLabel(monday) {
