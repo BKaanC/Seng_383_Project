@@ -4,6 +4,19 @@
   gap: 16px;
 }
 
+.schedule-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.schedule-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
 .schedule-day h3 {
   margin: 0 0 8px;
   font-size: 1rem;

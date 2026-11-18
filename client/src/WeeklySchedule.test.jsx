@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import WeeklySchedule from './WeeklySchedule'
 
@@ -152,5 +152,54 @@ describe('WeeklySchedule (FR-M3-02)', () => {
     render(<WeeklySchedule childId={1} initialWeek="2026-11-09" />)
 
     expect(await screen.findByRole('alert')).toBeTruthy()
+  })
+})
+
+describe('WeeklySchedule week buttons (FR-M3-03)', () => {
+  it('moves to the next week and loads its events', async () => {
+    mockEvents([])
+
+    render(<WeeklySchedule childId={1} initialWeek="2026-11-09" />)
+    await screen.findByText('Pazartesi, 9 Kasım')
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki hafta →' }))
+
+    expect(await screen.findByText('Pazartesi, 16 Kasım')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('16–22 Kasım 2026')
+    expect(globalThis.fetch).toHaveBeenLastCalledWith(
+      '/api/children/1/events?week=2026-11-16',
+      expect.anything()
+    )
+  })
+
+  it('moves to the previous week, also across a month', async () => {
+    mockEvents([])
+
+    render(<WeeklySchedule childId={1} initialWeek="2026-11-02" />)
+    await screen.findByText('Pazartesi, 2 Kasım')
+    fireEvent.click(screen.getByRole('button', { name: '← Önceki hafta' }))
+
+    expect(await screen.findByText('Pazartesi, 26 Ekim')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('26 Ekim – 1 Kasım 2026')
+    expect(globalThis.fetch).toHaveBeenLastCalledWith(
+      '/api/children/1/events?week=2026-10-26',
+      expect.anything()
+    )
+  })
+
+  it('does not show a late answer for a week the user already left', async () => {
+    let answerFirstWeek
+    vi.spyOn(globalThis, 'fetch')
+      .mockReturnValueOnce(new Promise((resolve) => (answerFirstWeek = resolve)))
+      .mockResolvedValueOnce({ ok: true, json: async () => [] })
+
+    render(<WeeklySchedule childId={1} initialWeek="2026-11-09" />)
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki hafta →' }))
+    await screen.findByText('Pazartesi, 16 Kasım')
+
+    answerFirstWeek({ ok: true, json: async () => events })
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(screen.queryByText('Speech therapy session')).toBeNull()
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('16–22 Kasım 2026')
   })
 })
