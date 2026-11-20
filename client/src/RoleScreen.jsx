@@ -1,3 +1,4 @@
+import TaskList from './TaskList'
 import WeeklySchedule from './WeeklySchedule'
 
 // Until child selection (M2) is added, parents and specialists see the demo
@@ -20,6 +21,7 @@ function RoleScreen({ user }) {
       <h2>{`${title} ekranı`}</h2>
       <p>Hoş geldin, {user.name}.</p>
       <WeeklySchedule childId={childId} />
+      <TaskList childId={childId} role={user.role} />
     </main>
   )
 }
