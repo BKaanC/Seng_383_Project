@@ -30,6 +30,13 @@ const sampleEvents = [
   },
 ];
 
+// M4: tasks assigned to the demo child by the specialist (3) and the parent (2).
+const sampleTasks = [
+  { childId: CHILD_ID, assignedBy: 3, title: 'Name five animals', description: 'Look at the picture book and name the animals.', area: 'language', dueDate: '2026-11-05' },
+  { childId: CHILD_ID, assignedBy: 3, title: 'Read for 20 minutes', description: 'Any book you like.', area: 'language', dueDate: '2026-11-24' },
+  { childId: CHILD_ID, assignedBy: 2, title: 'Tidy your room', description: null, area: 'self_care', dueDate: '2026-11-26' },
+];
+
 const insertUser = db.prepare(
   `INSERT INTO users (id, name, email, password_hash, role, parent_id)
    VALUES (@id, @name, @email, @passwordHash, @role, @parentId)`
@@ -38,11 +45,17 @@ const insertEvent = db.prepare(
   'INSERT INTO events (child_id, title, description, start_time, end_time) VALUES (@childId, @title, @description, @start, @end)'
 );
 
-const reseed = db.transaction((users, events) => {
+const insertTask = db.prepare(
+  `INSERT INTO tasks (child_id, assigned_by, title, description, area, due_date)
+   VALUES (@childId, @assignedBy, @title, @description, @area, @dueDate)`
+);
+
+const reseed = db.transaction((users, events, tasks) => {
+  db.exec('DELETE FROM tasks');
   db.exec('DELETE FROM users');
   db.exec('DELETE FROM events');
   
-  db.exec("DELETE FROM sqlite_sequence WHERE name IN ('users', 'events')");
+  db.exec("DELETE FROM sqlite_sequence WHERE name IN ('users', 'events', 'tasks')");
   for (const u of users) {
     insertUser.run({
       id: u.id,
@@ -54,7 +67,10 @@ const reseed = db.transaction((users, events) => {
     });
   }
   for (const e of events) insertEvent.run(e);
+  for (const t of tasks) insertTask.run(t);
 });
 
-reseed(sampleUsers, sampleEvents);
-console.log(`Seeded ${sampleUsers.length} users and ${sampleEvents.length} events.`);
+reseed(sampleUsers, sampleEvents, sampleTasks);
+console.log(
+  `Seeded ${sampleUsers.length} users, ${sampleEvents.length} events and ${sampleTasks.length} tasks.`
+);

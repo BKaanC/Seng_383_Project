@@ -4,6 +4,7 @@ const db = require('./db');
 const bcrypt = require('bcryptjs');
 const { signToken, requireAuth } = require('./auth');
 const eventsRouter = require('./routes/events');
+const { childTasksRouter, tasksRouter } = require('./routes/tasks');
 
 
 const app = express();
@@ -50,5 +51,7 @@ app.get('/api/me', requireAuth, (req, res) => {
 });
 
 app.use('/api/children/:childId/events', eventsRouter);
+app.use('/api/children/:childId/tasks', childTasksRouter);
+app.use('/api/tasks', tasksRouter);
 
 module.exports = app;
