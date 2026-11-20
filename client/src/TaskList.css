@@ -1,0 +1,78 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.task-list h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.task.done strong {
+  text-decoration: line-through;
+  color: #57606a;
+}
+
+.task-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-main p {
+  margin: 0;
+}
+
+.task-meta {
+  color: #57606a;
+  font-size: 0.9rem;
+}
+
+.task-status {
+  color: #1a7f37;
+  white-space: nowrap;
+}
+
+.task-status.pending {
+  color: #9a6700;
+}
+
+.assign-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 22rem;
+  margin-top: 8px;
+}
+
+.assign-task-form h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.assign-task-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}

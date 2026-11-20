@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AddEventForm from './AddEventForm'
+import TaskList from './TaskList'
 import WeeklySchedule from './WeeklySchedule'
 
 // Until child selection (M2) is added, parents and specialists see the demo
@@ -29,6 +30,7 @@ function RoleScreen({ user }) {
         <AddEventForm childId={childId} onAdded={() => setReloadKey((key) => key + 1)} />
       )}
       <WeeklySchedule childId={childId} reloadKey={reloadKey} />
+      <TaskList childId={childId} role={user.role} />
     </main>
   )
 }
