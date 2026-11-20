@@ -5,13 +5,14 @@ import './WeeklySchedule.css'
 
 // FR-M3-02: the child's events of one week, grouped by day from Monday to Sunday.
 // FR-M3-03: buttons move to the previous and the next week.
+// When reloadKey changes (e.g. after an event is added), the week is loaded again.
 // startTime and endTime come from the API as '2026-11-09T17:00:00'.
 
 function timeOf(dateTime) {
   return dateTime.slice(11, 16)
 }
 
-function WeeklySchedule({ childId, initialWeek }) {
+function WeeklySchedule({ childId, initialWeek, reloadKey = 0 }) {
   const [week, setWeek] = useState(() => initialWeek ?? mondayOf(today()))
   // The result remembers which week it belongs to, so an answer for an older
   // week is never shown as the current one.
@@ -34,7 +35,7 @@ function WeeklySchedule({ childId, initialWeek }) {
     return () => {
       ignore = true
     }
-  }, [childId, week])
+  }, [childId, week, reloadKey])
 
   const status = result && result.week === week ? result.status : 'loading'
   const events = status === 'ready' ? result.events : []
