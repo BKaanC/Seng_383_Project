@@ -50,6 +50,15 @@ cd client && npm test            # Vitest (component tests)
 cd client && npm run lint
 ```
 
+End-to-end tests (Playwright) start the API with the seed data and the client, then test them in a browser:
+
+```bash
+cd e2e
+npm install
+npx playwright install chromium   # once
+npm test
+```
+
 The same checks run in GitHub Actions on every pull request and on every push to `main`.
 
 ## Project structure
@@ -57,6 +66,7 @@ The same checks run in GitHub Actions on every pull request and on every push to
 ```
 client/   React (Vite) frontend
 server/   Express REST API, SQLite database, seed script, tests
+e2e/      Playwright end-to-end tests
 docs/     SRS, SDD and PMP
 .github/  CI workflow
 ```
