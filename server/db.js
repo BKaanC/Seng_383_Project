@@ -28,4 +28,19 @@ db.exec(`
   )
 `);
 
+// M4: tasks that a parent or specialist assigns to a child.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    child_id INTEGER NOT NULL REFERENCES users(id),
+    assigned_by INTEGER NOT NULL REFERENCES users(id),
+    title TEXT NOT NULL,
+    description TEXT,
+    area TEXT NOT NULL CHECK (area IN ('language', 'motor', 'social', 'cognitive', 'self_care')),
+    due_date TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'done')),
+    completed_at TEXT
+  )
+`);
+
 module.exports = db;
