@@ -12,12 +12,6 @@ async function logIn(page, email, password = PASSWORD) {
 }
 
 test.describe('M1 login and M3 weekly schedule', () => {
-  test.beforeEach(async ({ page }) => {
-    // The seed events are in the week of 2 November 2026; fix the browser
-    // clock to that week so the weekly schedule shows them on every run.
-    await page.clock.setFixedTime(new Date('2026-11-04T10:00:00'));
-  });
-
   test('a child logs in and sees their own weekly schedule', async ({ page }) => {
     await logIn(page, 'ali@test.com');
 

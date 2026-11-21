@@ -13,20 +13,32 @@ const sampleUsers = [
   { id: 4, name: 'Murat Yıldız', email: 'murat@test.com', role: 'specialist', parentId: null },
 ];
 
+// The seed events are put in the current week (Monday to Sunday), so the
+// weekly schedule shows them whenever the seed script is run.
+function dayOfThisWeek(daysAfterMonday) {
+  const date = new Date();
+  date.setDate(date.getDate() - ((date.getDay() + 6) % 7) + daysAfterMonday);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+const monday = dayOfThisWeek(0);
+const tuesday = dayOfThisWeek(1);
+
 const sampleEvents = [
   {
     childId: CHILD_ID,
     title: 'Speech therapy session',
     description: 'Weekly session with the speech therapist.',
-    start: '2026-11-02T10:00:00',
-    end: '2026-11-02T10:45:00',
+    start: `${monday}T10:00:00`,
+    end: `${monday}T10:45:00`,
   },
   {
     childId: CHILD_ID,
     title: 'Reading time',
     description: 'Read one chapter of a book together.',
-    start: '2026-11-03T16:00:00',
-    end: '2026-11-03T16:30:00',
+    start: `${tuesday}T16:00:00`,
+    end: `${tuesday}T16:30:00`,
   },
 ];
 
