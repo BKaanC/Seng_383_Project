@@ -13,8 +13,11 @@ const sampleUsers = [
   { id: 4, name: 'Murat Yıldız', email: 'murat@test.com', role: 'specialist', parentId: null },
 ];
 
-// The seed events are put in the current week (Monday to Sunday), so the
-// weekly schedule shows them whenever the seed script is run.
+
+const sampleLinks = [
+  { childId: CHILD_ID, specialistId: 3, specialistType: 'psychologist' },
+];
+
 function dayOfThisWeek(daysAfterMonday) {
   const date = new Date();
   date.setDate(date.getDate() - ((date.getDay() + 6) % 7) + daysAfterMonday);
@@ -42,7 +45,7 @@ const sampleEvents = [
   },
 ];
 
-// M4: tasks assigned to the demo child by the specialist (3) and the parent (2).
+
 const sampleTasks = [
   { childId: CHILD_ID, assignedBy: 3, title: 'Name five animals', description: 'Look at the picture book and name the animals.', area: 'language', dueDate: '2026-11-05' },
   { childId: CHILD_ID, assignedBy: 3, title: 'Read for 20 minutes', description: 'Any book you like.', area: 'language', dueDate: '2026-11-24' },
@@ -62,12 +65,21 @@ const insertTask = db.prepare(
    VALUES (@childId, @assignedBy, @title, @description, @area, @dueDate)`
 );
 
-const reseed = db.transaction((users, events, tasks) => {
+const insertLink = db.prepare(
+  `INSERT INTO specialist_links (child_id, specialist_id, specialist_type)
+   VALUES (@childId, @specialistId, @specialistType)`
+);
+
+const reseed = db.transaction((users, events, tasks, links) => {
+  
+  db.exec('DELETE FROM specialist_links');
   db.exec('DELETE FROM tasks');
   db.exec('DELETE FROM users');
   db.exec('DELETE FROM events');
-  
-  db.exec("DELETE FROM sqlite_sequence WHERE name IN ('users', 'events', 'tasks')");
+
+  db.exec(
+    "DELETE FROM sqlite_sequence WHERE name IN ('users', 'events', 'tasks', 'specialist_links')"
+  );
   for (const u of users) {
     insertUser.run({
       id: u.id,
@@ -80,9 +92,10 @@ const reseed = db.transaction((users, events, tasks) => {
   }
   for (const e of events) insertEvent.run(e);
   for (const t of tasks) insertTask.run(t);
+  for (const l of links) insertLink.run(l);
 });
 
-reseed(sampleUsers, sampleEvents, sampleTasks);
+reseed(sampleUsers, sampleEvents, sampleTasks, sampleLinks);
 console.log(
-  `Seeded ${sampleUsers.length} users, ${sampleEvents.length} events and ${sampleTasks.length} tasks.`
+  `Seeded ${sampleUsers.length} users, ${sampleEvents.length} events, ${sampleTasks.length} tasks and ${sampleLinks.length} specialist link.`
 );

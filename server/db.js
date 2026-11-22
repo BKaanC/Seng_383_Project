@@ -43,4 +43,17 @@ db.exec(`
   )
 `);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS specialist_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    child_id INTEGER NOT NULL REFERENCES users(id),
+    specialist_id INTEGER NOT NULL REFERENCES users(id),
+    specialist_type TEXT NOT NULL CHECK (
+      specialist_type IN ('teacher', 'psychologist', 'doctor', 'special_ed', 'coach')
+    ),
+    linked_at TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE (child_id, specialist_id)
+  )
+`);
+
 module.exports = db;
