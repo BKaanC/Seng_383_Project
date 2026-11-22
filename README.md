@@ -9,7 +9,9 @@ A web-based decision support platform that brings a child's parent and specialis
 
 ## Current release
 
-**v0.0 – walking skeleton.** SQLite holds sample events, Express reads them, and the React client shows them in the browser. Login, specialist links and the other modules (M1–M8) are added in the next releases.
+**v0.1 – mid-term release.** Parents, specialists and children log in and see a screen for their role (M1). Parents and specialists add events to the child's weekly schedule (M3) and assign tasks that the child marks done (M4). The first part of M2 is in: the specialist links table and the endpoint that links a specialist to a child. Listing and unlinking specialists, the child access check and the linking screen follow in the next sprint.
+
+Demo accounts (seed data, password `Test1234`): `ayse@test.com` (parent), `zeynep@test.com` (specialist), `ali@test.com` (child).
 
 ## Requirements
 

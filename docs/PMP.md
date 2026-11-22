@@ -46,22 +46,22 @@
 
 ### Work Packages (Epics)
 
-Development is split by module, so every member works on both frontend and backend. The team uses one-week sprints (Monday–Sunday). Section 2 has class on Mondays, so each in-class milestone is reached by the end of the sprint before it. Task counts are taken from Jira on 15 November 2026 and are updated at the end of each sprint.
+Development is split by module, so every member works on both frontend and backend. The team uses one-week sprints (Monday–Sunday). Section 2 has class on Mondays, so each in-class milestone is reached by the end of the sprint before it. Task counts are taken from Jira on 22 November 2026 and are updated at the end of each sprint.
 
 | Epic | Owner | Number of tasks | Planned sprint(s) |
 |---|---|---|---|
 | PMP-1 – Project, Jira setup, team and roles | Bekir Kaan Çalışkan | 1 | Sprint 1 |
 | PMP-2 – Work packages and sprint plan | Bekir Kaan Çalışkan | 1 | Sprint 2 |
 | PMP-3 – Progress review: mid-term (v0.1) | Bekir Kaan Çalışkan | 1 | Sprint 4 |
-| PMP-4 – Progress review: v0.2 | Bekir Kaan Çalışkan | 0 | Sprint 5 |
+| PMP-4 – Progress review: v0.2 | Bekir Kaan Çalışkan | 1 | Sprint 5 |
 | PMP-5 – Progress review: final (v1.0) | Bekir Kaan Çalışkan | 0 | Sprint 7 |
 | PMP-6 – Retrospective | Bekir Kaan Çalışkan | 0 | Sprint 8 |
 | SRS – Software requirements specification | Bekir Kaan Çalışkan (each member writes own modules) | 4 | Sprint 2 (first), Sprint 7 (final) |
 | DESIGN – Software design document | Bekir Kaan Çalışkan (each member writes own modules) | 1 | Sprint 2 (first), Sprint 7 (final) |
 | M1 – Login and roles | Aleyna Tanrıverdi | 4 | Sprint 2–5 |
-| M2 – Linking specialists | Aleyna Tanrıverdi | 0 | Sprint 3–5 |
-| M3 – Weekly schedule | Irmak Konak | 7 | Sprint 1–2, Sprint 3–5 |
-| M4 – Tasks | Bekir Kaan Çalışkan | 1 | Sprint 4–5 |
+| M2 – Linking specialists | Aleyna Tanrıverdi | 5 | Sprint 5–6 |
+| M3 – Weekly schedule | Irmak Konak | 9 | Sprint 1–2, Sprint 3–5 |
+| M4 – Tasks | Bekir Kaan Çalışkan | 2 | Sprint 4–5 |
 | M5 – Specialist entries | Irmak Konak | 0 | Sprint 5–7 |
 | M6 – Documents | Aleyna Tanrıverdi | 0 | Sprint 5–7 |
 | M7 – Weekly statistics | Bekir Kaan Çalışkan | 0 | Sprint 5–7 |
@@ -84,7 +84,7 @@ Development is split by module, so every member works on both frontend and backe
 | Sprint 3 | Week 6 (2–8 Nov) | M1 login and roles (JWT); start of M2, M3 and M4 | M1 working end to end |
 | Sprint 4 | Week 7 (9–15 Nov) | M1 login and roles; M3 weekly schedule and M4 tasks in progress; PMP-3 | M1 login in `main`, PMP-3 done |
 | Sprint 5 | Week 8 (16–22 Nov) | Finish M1–M4 (including M2); first end-to-end test running in CI; PMP-4 | Release v0.1 (M1–M4), mid-term demo in class on 23 Nov (Week 9) |
-| Sprint 6 | Week 9 (23–29 Nov) | M5–M8 development; end-to-end tests for 3 critical flows | M5–M8 feature complete |
+| Sprint 6 | Week 9 (23–29 Nov) | Finish M2 (list and unlink, child access check, linking screen) and connect M3 and M4 to the access check; M5–M8 development; end-to-end tests for 3 critical flows | M2 complete, M5–M8 in progress |
 | Sprint 7 | Week 10 (30 Nov–6 Dec) | Branch coverage ≥ 40%; SRS and SDD final; PMP-5 | Release v0.2 (M1–M8), Week 10 |
 | Sprint 8 | Week 11 (7–13 Dec) | An end-to-end test for each of M1–M8, branch coverage ≥ 60%, final report, PMP-6, presentation | Release v1.0, final demo in class on 14 Dec (Week 12) |
 
@@ -122,14 +122,26 @@ Review at the end of Sprint 4 (15 November 2026, Week 7). Statuses are taken fro
 
 ## PMP-4. Progress Review: v0.2
 
-**Jira board screenshot:**  
+Review at the end of Sprint 5 (22 November 2026, Week 8), the day before the v0.1 demo in class. Statuses are taken from Jira; an item is Done when its pull request is merged into `main`.
+
+**Jira board screenshot:** ![Sprint 5 board](img/pmp4-sprint5-board.png)
 
 | Epic | Planned for this point | Status (Done / In progress / Not started) |
 |---|---|---|
-| | | |
-| | | |
+| PMP-4 – Progress review | Complete (Sprint 5) | Done |
+| SRS / DESIGN | First version, updated for the data model in Sprint 4 | Done for now; final versions in Sprint 7 |
+| M1 – Login and roles | Complete for v0.1 | Done: login, JWT, login screen, logout and role-based route protection |
+| M2 – Linking specialists | Complete for v0.1 | In progress: `specialist_links` table and the link endpoint (`POST /api/children/:childId/specialists`) are in `main`; list and unlink, the child access check and the linking screen remain |
+| M3 – Weekly schedule | Complete for v0.1 | Done: weekly schedule screen, add event form, week filter, seed events in the current week |
+| M4 – Tasks | Complete for v0.1 | Done: tasks API and task list screen (assign, list, mark done) |
+| Test infrastructure | First end-to-end test running in CI | Done: Playwright tests for login and the weekly schedule run in GitHub Actions on every pull request |
+| M5–M8 | Start in Sprint 5 | Not started |
 
-**Changes to the plan (if any):**
+**Changes to the plan:**
+
+- **M2 is not complete in v0.1.** M2 development started only in Sprint 5 because M1, which it depends on, was finished late (see PMP-3). The table and the link endpoint are done; listing and unlinking, the child access check (FR-M2-05) and the linking screen move to Sprint 6. Until the access check is added, specialists can see every child's schedule and tasks; M3 and M4 will use the access check as soon as it is merged.
+- **M5–M8 start one sprint later.** Sprint 5 was used to finish M1, M3 and M4 and to set up the end-to-end tests. M5–M8 start in Sprint 6 together with the rest of M2.
+- **Merge method.** Pull requests are merged with "Rebase and merge" so each commit stays in `main` under its author; a pull request whose branch contains a merge from `main` uses "Create a merge commit".
 
 ---
 
