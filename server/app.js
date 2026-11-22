@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const { signToken, requireAuth } = require('./auth');
 const eventsRouter = require('./routes/events');
 const { childTasksRouter, tasksRouter } = require('./routes/tasks');
-
+const linksRouter = require('./routes/links')
 
 const app = express();
 app.use(cors());
@@ -53,5 +53,6 @@ app.get('/api/me', requireAuth, (req, res) => {
 app.use('/api/children/:childId/events', eventsRouter);
 app.use('/api/children/:childId/tasks', childTasksRouter);
 app.use('/api/tasks', tasksRouter);
+app.use('/api', linksRouter)
 
 module.exports = app;
