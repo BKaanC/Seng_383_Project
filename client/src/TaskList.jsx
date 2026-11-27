@@ -12,7 +12,7 @@ function formatDate(date) {
 
 // FR-M4-02, FR-M4-03: the child sees their tasks and marks them done.
 // FR-M4-01, FR-M4-04: a parent or specialist assigns tasks and sees their status.
-function TaskList({ childId, role }) {
+function TaskList({ childId, role, onChanged }) {
   const [tasks, setTasks] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
@@ -50,6 +50,7 @@ function TaskList({ childId, role }) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const updated = await res.json()
       setTasks((current) => current.map((t) => (t.id === updated.id ? updated : t)))
+      onChanged?.()
     } catch {
       setError('Görev güncellenemedi.')
     }
@@ -59,6 +60,7 @@ function TaskList({ childId, role }) {
     setTasks((current) =>
       [...current, task].sort((a, b) => a.dueDate.localeCompare(b.dueDate) || a.id - b.id)
     )
+    onChanged?.()
   }
 
   const canAssign = role === 'parent' || role === 'specialist'

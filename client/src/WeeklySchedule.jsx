@@ -12,8 +12,13 @@ function timeOf(dateTime) {
   return dateTime.slice(11, 16)
 }
 
-function WeeklySchedule({ childId, initialWeek, reloadKey = 0 }) {
+function WeeklySchedule({ childId, initialWeek, reloadKey = 0, onWeekChange }) {
   const [week, setWeek] = useState(() => initialWeek ?? mondayOf(today()))
+
+  // Lets the parent component follow the selected week (used by M7 statistics).
+  useEffect(() => {
+    onWeekChange?.(week)
+  }, [week, onWeekChange])
   // The result remembers which week it belongs to, so an answer for an older
   // week is never shown as the current one.
   const [result, setResult] = useState(null)
