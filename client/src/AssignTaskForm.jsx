@@ -17,6 +17,15 @@ function AssignTaskForm({ childId, onAssigned }) {
   async function handleSubmit(event) {
     event.preventDefault()
     setError('')
+    // A visible message instead of the browser's short tooltip.
+    if (!form.title.trim()) {
+      setError('Görev başlığını yazın.')
+      return
+    }
+    if (!form.dueDate) {
+      setError('Son tarihi gün, ay ve yıl olarak seçin.')
+      return
+    }
     setSaving(true)
     try {
       const res = await authFetch(`/api/children/${childId}/tasks`, {
@@ -36,7 +45,7 @@ function AssignTaskForm({ childId, onAssigned }) {
   }
 
   return (
-    <form className="assign-task-form" onSubmit={handleSubmit} aria-label="Görev ata">
+    <form className="assign-task-form" onSubmit={handleSubmit} aria-label="Görev ata" noValidate>
       <h3>Yeni görev ata</h3>
       <label>
         Görev başlığı
