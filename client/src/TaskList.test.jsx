@@ -104,6 +104,24 @@ describe('TaskList', () => {
     expect((await screen.findByRole('alert')).textContent).toContain('dueDate must be')
   })
 
+  it.each([
+    ['the title', { title: '   ', dueDate: '2026-11-26' }, 'Görev başlığını yazın.'],
+    ['the due date', { title: 'Draw a tree', dueDate: '' }, 'Son tarihi gün, ay ve yıl olarak seçin.'],
+  ])('shows a clear message and sends nothing when %s is missing', async (_, values, message) => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(jsonResponse([]))
+
+    render(<TaskList childId={1} role="specialist" />)
+    await screen.findByText('Henüz görev yok.')
+
+    const form = screen.getByRole('form', { name: 'Görev ata' })
+    fireEvent.change(within(form).getByLabelText('Görev başlığı'), { target: { value: values.title } })
+    fireEvent.change(within(form).getByLabelText('Son tarih'), { target: { value: values.dueDate } })
+    fireEvent.click(within(form).getByRole('button', { name: 'Görevi ata' }))
+
+    expect((await screen.findByRole('alert')).textContent).toBe(message)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
   it('shows an error when the tasks cannot be loaded', async () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('network'))
 
