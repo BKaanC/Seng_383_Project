@@ -1,0 +1,57 @@
+.weekly-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.weekly-stats h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.stat-total {
+  margin: 0;
+  font-weight: 600;
+}
+
+.stat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr 6.5rem;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-bar {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: #d0d7de;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  display: block;
+  height: 100%;
+  background: #1a7f37;
+}
+
+.stat-value {
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.stat-empty {
+  grid-column: 2 / 4;
+  color: #57606a;
+  font-size: 0.9rem;
+}

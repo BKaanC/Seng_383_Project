@@ -146,6 +146,10 @@ function completeTask(user, taskId, input) {
 
 module.exports = {
   AREAS,
+  isValidDate,
+  addDays,
+  findChild,
+  checkChildAccess,
   listTasks,
   createTask,
   completeTask,
